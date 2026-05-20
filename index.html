@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -388,6 +388,28 @@
       background: var(--orange-light);
     }
 
+    /* TIMELINE */
+    .timeline-wrap { display:flex; align-items:flex-start; gap:0; margin:20px 0; position:relative; }
+    .timeline-wrap::before { content:''; position:absolute; top:18px; left:0; right:0; height:3px; background:#E5E7EB; z-index:0; }
+    .tl-phase { flex:1; text-align:center; position:relative; z-index:1; }
+    .tl-dot { width:36px; height:36px; border-radius:50%; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:#fff; }
+    .tl-dot.blue { background:#1877F2; } .tl-dot.green { background:#00A854; } .tl-dot.purple { background:#7C3AED; }
+    .tl-label { font-size:12px; font-weight:700; color:#111827; margin-bottom:3px; }
+    .tl-dates { font-size:10px; color:#9CA3AF; margin-bottom:4px; }
+    .tl-desc { font-size:11px; color:#6B7280; line-height:1.4; }
+    /* METRIC ROW */
+    .metric-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+    .metric-mini { background:#F9FAFB; border-radius:10px; padding:14px 12px; text-align:center; border-top:2px solid #E5E7EB; }
+    .metric-mini.blue  { border-top-color:#1877F2; } .metric-mini.green { border-top-color:#00A854; }
+    .metric-mini.orange{ border-top-color:#F59E0B; } .metric-mini.purple{ border-top-color:#7C3AED; }
+    .mm-val { font-size:20px; font-weight:800; color:#111827; }
+    .mm-lbl { font-size:11px; color:#6B7280; margin-top:3px; }
+    /* PROYECCION */
+    .proy-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .proy-card { background:#fff; border-radius:12px; padding:18px; box-shadow:0 1px 3px rgba(0,0,0,.07); text-align:center; }
+    .proy-val { font-size:24px; font-weight:800; color:#1877F2; }
+    .proy-lbl { font-size:12px; color:#6B7280; margin-top:4px; }
+    .proy-sub { font-size:11px; color:#9CA3AF; margin-top:2px; }
     /* FOOTER */
     footer {
       text-align: center;
@@ -614,6 +636,78 @@
     </div>
   </div>
 
+
+  <!-- TEMPORAL ANALYSIS -->
+  <p class="section-title">Analisis Temporal — 63 dias de campana</p>
+
+  <div class="card" style="margin-bottom:16px">
+    <h3>Promedios diarios (19 mar – 20 may 2026)</h3>
+    <div class="metric-row">
+      <div class="metric-mini blue"><div class="mm-val">63</div><div class="mm-lbl">Dias activos</div></div>
+      <div class="metric-mini green"><div class="mm-val">4.4</div><div class="mm-lbl">Conversaciones/dia (Meta)</div></div>
+      <div class="metric-mini orange"><div class="mm-val">10.0</div><div class="mm-lbl">Clics/dia (Google)</div></div>
+      <div class="metric-mini purple"><div class="mm-val">$10.25</div><div class="mm-lbl">Inversion diaria total</div></div>
+    </div>
+
+    <h3 style="margin-bottom:16px">Cronologia de la campana</h3>
+    <div class="timeline-wrap">
+      <div class="tl-phase">
+        <div class="tl-dot blue">1</div>
+        <div class="tl-label">Lanzamiento</div>
+        <div class="tl-dates">19 mar – 1 abr (~14 dias)</div>
+        <div class="tl-desc">Creativos originales activos. FCG_WhatsApp y FCG_WhatsApp - 2. Establecimiento de audiencia y CPR base.</div>
+      </div>
+      <div class="tl-phase">
+        <div class="tl-dot green">2</div>
+        <div class="tl-label">Optimizacion</div>
+        <div class="tl-dates">1 abr – 25 abr (~24 dias)</div>
+        <div class="tl-desc">3 variantes nuevas: Copia, Copia 2, -new-5. Prueba A/B de creativos para bajar CPR. 65+ emerge como mejor segmento.</div>
+      </div>
+      <div class="tl-phase">
+        <div class="tl-dot purple">3</div>
+        <div class="tl-label">Reactivacion</div>
+        <div class="tl-dates">25 abr – 20 may (~25 dias)</div>
+        <div class="tl-desc">2 creativos de reactivacion. Campana pausada y relanzada con nuevas versiones para evitar fatiga de audiencia.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:16px">
+    <div class="card">
+      <h3>Evolucion de creativos — Inversion y CPR</h3>
+      <canvas id="creativosChart" height="180"></canvas>
+    </div>
+    <div class="card">
+      <h3>Contexto estacional — Oncologia</h3>
+      <div style="font-size:13px;color:#374151;line-height:1.7">
+        <div style="margin-bottom:10px"><strong style="color:#1877F2">Marzo:</strong> inicio de temporada de chequeos preventivos anuales. Alta intenci&oacute;n de b&uacute;squeda post-verano.</div>
+        <div style="margin-bottom:10px"><strong style="color:#00A854">Abril:</strong> mes de concienciaci&oacute;n sobre el c&aacute;ncer cervical y colorrectal. Pico de b&uacute;squedas org&aacute;nicas.</div>
+        <div style="margin-bottom:10px"><strong style="color:#7C3AED">Mayo:</strong> continuidad de decisiones de salud. El CTR de 5.56% en Google refleja alta intenci&oacute;n activa de b&uacute;squeda.</div>
+        <div style="background:#F0FDF4;border-radius:8px;padding:10px;font-size:12px;color:#166534;border:1px solid #86EFAC"><strong>El periodo mar-may es uno de los ventanas de mayor intenci&oacute;n en salud preventiva del a&ntilde;o.</strong> Mantener la campana activa en este periodo es estrategicamente correcto.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:24px">
+    <h3>Proyeccion anual al ritmo actual</h3>
+    <div class="proy-grid">
+      <div class="proy-card">
+        <div class="proy-val">1,617</div>
+        <div class="proy-lbl">Conversaciones/ano (Meta)</div>
+        <div class="proy-sub">4.4/dia x 365 a CPR $1.40</div>
+      </div>
+      <div class="proy-card">
+        <div class="proy-val">3,669</div>
+        <div class="proy-lbl">Clics/ano (Google)</div>
+        <div class="proy-sub">10.0/dia x 365 a CPC $0.40</div>
+      </div>
+      <div class="proy-card">
+        <div class="proy-val">$3,732</div>
+        <div class="proy-lbl">Inversion anual proyectada</div>
+        <div class="proy-sub">$2,264 Meta + $1,468 Google</div>
+      </div>
+    </div>
+  </div>
   <!-- RECOMENDACIONES -->
   <div class="section-title">Recomendaciones Estrategicas</div>
   <div class="rec-grid">
@@ -768,7 +862,47 @@
         }
       }
     });
-  })();
+  
+    // Creative evolution chart
+    (function() {
+      var ctx = document.getElementById('creativosChart');
+      if (!ctx) return;
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Original','- 2','- Copia','- Copia 2','-new-5','-new Reac.','-new-6 Reac.'],
+          datasets: [
+            {
+              label: 'Inversion (USD)',
+              data: [51.36, 3.86, 0.68, 7.00, 2.26, 6.32, 4.39],
+              backgroundColor: '#1877F2',
+              borderRadius: 4,
+              yAxisID: 'y'
+            },
+            {
+              label: 'CPR (USD)',
+              data: [1.14, 1.93, 0.68, 7.00, null, 6.32, 2.20],
+              type: 'line',
+              borderColor: '#F59E0B',
+              backgroundColor: 'rgba(245,158,11,0.1)',
+              borderWidth: 2,
+              pointRadius: 5,
+              pointBackgroundColor: '#F59E0B',
+              yAxisID: 'y1',
+              spanGaps: false
+            }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'top' } },
+          scales: {
+            y:  { beginAtZero: true, title: { display: true, text: 'Inversion ($)', font: { size: 11 } } },
+            y1: { beginAtZero: true, position: 'right', title: { display: true, text: 'CPR ($)', font: { size: 11 } }, grid: { drawOnChartArea: false } }
+          }
+        }
+      });
+    })();
+})();
 </script>
 
 </body>
