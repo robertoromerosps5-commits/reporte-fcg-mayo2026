@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reporte Multiplataforma | FCG</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --blue: #1877F2;
+      --blue-light: #EBF2FF;
+      --green: #16A34A;
+      --green-light: #DCFCE7;
+      --orange: #F59E0B;
+      --orange-light: #FEF3C7;
+      --red: #DC2626;
+      --red-light: #FEE2E2;
+      --purple: #7C3AED;
+      --purple-light: #EDE9FE;
+      --gray: #6B7280;
+      --gray-light: #F3F4F6;
+      --text: #111827;
+      --text-secondary: #374151;
+      --text-muted: #6B7280;
+      --border: #E5E7EB;
+      --shadow: 0 1px 3px rgba(0,0,0,.07);
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F1F5F9;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #1877F2 0%, #0C4FC4 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+      margin-bottom: 28px;
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .4px;
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -.3px;
+      margin-bottom: 4px;
+    }
+    .header h2 {
+      font-size: 15px;
+      font-weight: 400;
+      opacity: .85;
+      margin-bottom: 14px;
+    }
+    .header-period {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 5px 16px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* MAIN CONTAINER */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+
+    /* SECTION TITLE */
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      margin-top: 28px;
+    }
+
+    /* CARD */
+    .card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 22px;
+    }
+
+    /* KPI GRID */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 540px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .kpi {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 16px 14px;
+      border-top: 4px solid var(--blue);
+    }
+    .kpi.green { border-top-color: var(--green); }
+    .kpi.orange { border-top-color: var(--orange); }
+    .kpi.purple { border-top-color: var(--purple); }
+
+    .kpi-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .kpi-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .kpi-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* CHARTS ROW */
+    .charts-row {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 820px) {
+      .charts-row { grid-template-columns: 1fr; }
+    }
+    .chart-card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 22px;
+    }
+    .chart-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .chart-wrap {
+      position: relative;
+    }
+
+    /* TABS */
+    .tabs-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px 20px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      border-radius: 6px 6px 0 0;
+      transition: color .15s, border-color .15s;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+      background: var(--blue-light);
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* HIGHLIGHT BOX */
+    .hl {
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+    }
+    .hl-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+    .hl-item {
+      font-size: 13px;
+      color: #166534;
+      padding: 3px 0 3px 16px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .hl-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 9px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    /* TABLE */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .data-table thead th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: var(--text-muted);
+      padding: 8px 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    .data-table tbody tr {
+      border-bottom: 1px solid var(--gray-light);
+      transition: background .1s;
+    }
+    .data-table tbody tr:hover { background: #FAFAFA; }
+    .data-table tbody tr:last-child { border-bottom: none; }
+    .data-table tbody td {
+      padding: 10px 12px;
+      color: var(--text-secondary);
+    }
+    .data-table tbody td:first-child { font-weight: 600; color: var(--text); }
+    .data-table tbody td:nth-child(2),
+    .data-table tbody td:nth-child(3),
+    .data-table tbody td:nth-child(4) { text-align: right; }
+
+    /* PILLS */
+    .pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+    .p-green { background: var(--green-light); color: #166534; }
+    .p-blue { background: var(--blue-light); color: #1D4ED8; }
+    .p-orange { background: var(--orange-light); color: #92400E; }
+    .p-red { background: var(--red-light); color: #991B1B; }
+    .p-gray { background: var(--gray-light); color: var(--gray); }
+
+    /* NOTE CARD */
+    .note-card {
+      background: #FFFBEB;
+      border: 1px solid #FCD34D;
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: #92400E;
+      line-height: 1.6;
+    }
+    .note-card strong { color: #78350F; }
+
+    /* STAT GRID */
+    .stat-grid {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .stat-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .stat-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 600px) {
+      .stat-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .stat-box {
+      background: var(--gray-light);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-box-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .stat-box-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* REC GRID */
+    .rec-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 760px) {
+      .rec-grid { grid-template-columns: 1fr; }
+    }
+
+    .rec-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--blue);
+    }
+    .rec-card.orange { border-left-color: var(--orange); }
+    .rec-card.red { border-left-color: var(--red); }
+
+    .rec-num {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .rec-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .rec-body {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .rec-impact {
+      font-size: 12px;
+      font-weight: 600;
+      color: #166534;
+      background: #DCFCE7;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+    .rec-impact.orange-impact {
+      color: #92400E;
+      background: var(--orange-light);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 24px 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+    }
+
+    /* DIVIDER */
+    .divider { height: 1px; background: var(--border); margin: 20px 0; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-badge">Reporte Multiplataforma</div>
+    <h1>Reporte Multiplataforma | FCG</h1>
+    <h2>Meta Ads + Google Ads</h2>
+    <span class="header-period">19 mar – 20 may 2026 · 63 dias</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- KPI ROW -->
+  <div class="section-title">Resumen General</div>
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Total Invertido</div>
+      <div class="kpi-value">$645.19</div>
+      <div class="kpi-sub">Meta + Google</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">Conversaciones Meta</div>
+      <div class="kpi-value">279</div>
+      <div class="kpi-sub">WhatsApp mensajes</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">CPR Meta</div>
+      <div class="kpi-value">$1.40</div>
+      <div class="kpi-sub">Costo por conversacion</div>
+    </div>
+    <div class="kpi orange">
+      <div class="kpi-label">Clics Google</div>
+      <div class="kpi-value">633</div>
+      <div class="kpi-sub">Busqueda organica</div>
+    </div>
+    <div class="kpi orange">
+      <div class="kpi-label">CTR Google</div>
+      <div class="kpi-value">5.56%</div>
+      <div class="kpi-sub">Benchmark: 2-5%</div>
+    </div>
+    <div class="kpi purple">
+      <div class="kpi-label">CPC Google</div>
+      <div class="kpi-value">$0.40</div>
+      <div class="kpi-sub">Costo por clic</div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW -->
+  <div class="section-title">Distribucion de Resultados</div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">Conversaciones por grupo de edad (Meta)</div>
+      <div class="chart-wrap" style="height:280px;">
+        <canvas id="chartAge"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Inversion por plataforma</div>
+      <div class="chart-wrap" style="height:280px; display:flex; align-items:center; justify-content:center;">
+        <canvas id="chartPlatform" style="max-width:260px; max-height:260px;"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="section-title">Detalle por Plataforma</div>
+  <div class="card" style="padding:0; overflow:hidden;">
+    <div style="padding:0 22px;">
+      <div class="tabs-bar">
+        <button class="tab-btn active" onclick="showTab('meta', this)">Meta — Mensajes</button>
+        <button class="tab-btn" onclick="showTab('google', this)">Google Ads — Busqueda</button>
+      </div>
+    </div>
+
+    <!-- META TAB -->
+    <div id="tab-meta" class="tab-pane active" style="padding:0 22px 22px;">
+      <div class="hl">
+        <div class="hl-title">Puntos destacados</div>
+        <div class="hl-item">65+ es el grupo mas eficiente con CPR de $0.99 — por debajo de $1</div>
+        <div class="hl-item">35-44 Masculino: $0.97/conv con 30 conversaciones — mejor volumen a bajo costo</div>
+        <div class="hl-item">55-64 Femenino: 47 conversaciones a $1.09 — mayor volumen del mes</div>
+        <div class="hl-item">CPR general de $1.40 es competitivo para el sector salud</div>
+      </div>
+
+      <div class="section-title" style="margin-top:0;">Rendimiento por segmento</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Segmento</th>
+            <th>Conversaciones</th>
+            <th>Inversion</th>
+            <th>CPR</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>65+ Masculino</td>
+            <td style="text-align:right;">13</td>
+            <td style="text-align:right;">$9.24</td>
+            <td style="text-align:right;"><span class="pill p-green">$0.71</span></td>
+            <td>Destacado</td>
+          </tr>
+          <tr>
+            <td>35-44 Masculino</td>
+            <td style="text-align:right;">30</td>
+            <td style="text-align:right;">$29.05</td>
+            <td style="text-align:right;"><span class="pill p-green">$0.97</span></td>
+            <td>Destacado</td>
+          </tr>
+          <tr>
+            <td>55-64 Femenino</td>
+            <td style="text-align:right;">47</td>
+            <td style="text-align:right;">$51.14</td>
+            <td style="text-align:right;"><span class="pill p-green">$1.09</span></td>
+            <td>Buen rendimiento</td>
+          </tr>
+          <tr>
+            <td>25-34 Masculino</td>
+            <td style="text-align:right;">16</td>
+            <td style="text-align:right;">$18.03</td>
+            <td style="text-align:right;"><span class="pill p-green">$1.13</span></td>
+            <td>Buen rendimiento</td>
+          </tr>
+          <tr>
+            <td>65+ Femenino</td>
+            <td style="text-align:right;">19</td>
+            <td style="text-align:right;">$22.23</td>
+            <td style="text-align:right;"><span class="pill p-green">$1.17</span></td>
+            <td>Buen rendimiento</td>
+          </tr>
+          <tr>
+            <td>45-54 Masculino</td>
+            <td style="text-align:right;">16</td>
+            <td style="text-align:right;">$25.25</td>
+            <td style="text-align:right;"><span class="pill p-blue">$1.58</span></td>
+            <td>Normal</td>
+          </tr>
+          <tr>
+            <td>35-44 Femenino</td>
+            <td style="text-align:right;">54</td>
+            <td style="text-align:right;">$87.73</td>
+            <td style="text-align:right;"><span class="pill p-blue">$1.62</span></td>
+            <td>Normal</td>
+          </tr>
+          <tr>
+            <td>45-54 Femenino</td>
+            <td style="text-align:right;">48</td>
+            <td style="text-align:right;">$81.55</td>
+            <td style="text-align:right;"><span class="pill p-blue">$1.70</span></td>
+            <td>Normal</td>
+          </tr>
+          <tr>
+            <td>18-24 Femenino</td>
+            <td style="text-align:right;">2</td>
+            <td style="text-align:right;">$6.10</td>
+            <td style="text-align:right;"><span class="pill p-orange">$3.05</span></td>
+            <td>Revisar</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- GOOGLE TAB -->
+    <div id="tab-google" class="tab-pane" style="padding:0 22px 22px;">
+      <div class="hl">
+        <div class="hl-title">Puntos destacados</div>
+        <div class="hl-item">CTR de 5.56% supera el benchmark de busqueda del sector salud (2-5%)</div>
+        <div class="hl-item">CPC de $0.40 es excepcionalmente bajo para keywords de oncologia (benchmark $2-8)</div>
+        <div class="hl-item">61.59% de impresiones en posicion superior — buena visibilidad de marca</div>
+        <div class="hl-item">Campana activa y entregando — base solida para agregar seguimiento de conversiones</div>
+      </div>
+
+      <div class="section-title" style="margin-top:0;">Metricas de la campana</div>
+      <div class="stat-grid cols-4">
+        <div class="stat-box">
+          <div class="stat-box-value">633</div>
+          <div class="stat-box-label">Clics</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-value">5.56%</div>
+          <div class="stat-box-label">CTR</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-value">$0.40</div>
+          <div class="stat-box-label">CPC</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-value">$254.86</div>
+          <div class="stat-box-label">Inversion</div>
+        </div>
+      </div>
+
+      <div class="stat-grid cols-2">
+        <div class="stat-box">
+          <div class="stat-box-value">61.59%</div>
+          <div class="stat-box-label">Top Impression Share</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-value">30.19%</div>
+          <div class="stat-box-label">Absolute Top IS</div>
+        </div>
+      </div>
+
+      <div class="note-card">
+        <strong>Nota sobre conversiones:</strong> Las conversiones muestran 0 en el reporte porque el seguimiento de conversiones aun no esta configurado en Google Ads. Los clics estan llegando al sitio — configurar el pixel de conversion permitira medir el impacto real de esta campana.
+      </div>
+    </div>
+  </div>
+
+  <!-- RECOMENDACIONES -->
+  <div class="section-title">Recomendaciones Estrategicas</div>
+  <div class="rec-grid">
+    <div class="rec-card">
+      <div class="rec-num">Recomendacion 1</div>
+      <div class="rec-title">Escalar en 65+ y 35-44 Masculino</div>
+      <div class="rec-body">Son los segmentos con mejor CPR ($0.71 y $0.97). Aumentar su presupuesto asignado puede generar mas conversaciones sin elevar el costo promedio.</div>
+      <span class="rec-impact">Est. +40 conversaciones/mes</span>
+    </div>
+    <div class="rec-card orange">
+      <div class="rec-num">Recomendacion 2</div>
+      <div class="rec-title">Configurar conversion tracking en Google Ads</div>
+      <div class="rec-body">633 clics al sitio con $0 en conversiones registradas indica que el seguimiento no esta activo. Una vez configurado, se podra optimizar la campana hacia conversiones reales y bajar el CPA.</div>
+      <span class="rec-impact orange-impact">Sin tracking = sin optimizacion automatica</span>
+    </div>
+    <div class="rec-card red">
+      <div class="rec-num">Recomendacion 3</div>
+      <div class="rec-title">Revisar inversion en 18-24</div>
+      <div class="rec-body">Con CPR de $4.22 (3x el promedio), este segmento consume presupuesto sin resultados proporcionales. Para un servicio de salud como oncologia, el publico 35-65 historicamente convierte mejor.</div>
+      <span class="rec-impact">Ahorro potencial: ~$8/mes redirigibles</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  Generado el 20 mayo 2026 &nbsp;·&nbsp; Fuente: Meta Ads Manager + Google Ads &nbsp;·&nbsp; Periodo: 19 mar – 20 may 2026
+</footer>
+
+<script>
+  // TAB FUNCTION
+  function showTab(name, btn) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // CHART 1: Horizontal bar — Age groups + CPR line
+  (function() {
+    var ctx = document.getElementById('chartAge').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['35-44', '45-54', '55-64', '25-34', '65+', '18-24'],
+        datasets: [
+          {
+            label: 'Conversaciones',
+            data: [86, 64, 56, 39, 32, 2],
+            backgroundColor: 'rgba(24, 119, 242, 0.75)',
+            borderColor: 'rgba(24, 119, 242, 1)',
+            borderWidth: 1,
+            borderRadius: 4,
+            yAxisID: 'yLeft'
+          },
+          {
+            label: 'CPR ($)',
+            data: [1.37, 1.68, 1.23, 1.44, 0.99, 4.22],
+            type: 'line',
+            borderColor: '#F59E0B',
+            backgroundColor: 'rgba(245,158,11,0.12)',
+            borderWidth: 2,
+            pointBackgroundColor: '#F59E0B',
+            pointRadius: 4,
+            tension: 0.3,
+            yAxisID: 'yRight'
+          }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: { font: { size: 11 }, boxWidth: 12, padding: 12 }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                if (ctx.dataset.label === 'CPR ($)') {
+                  return ' CPR: $' + ctx.parsed.x.toFixed(2);
+                }
+                return ' Conversaciones: ' + ctx.parsed.x;
+              }
+            }
+          }
+        },
+        scales: {
+          yLeft: {
+            type: 'linear',
+            position: 'left',
+            beginAtZero: true,
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            ticks: { font: { size: 11 } }
+          },
+          yRight: {
+            type: 'linear',
+            position: 'right',
+            beginAtZero: true,
+            grid: { drawOnChartArea: false },
+            ticks: {
+              font: { size: 11 },
+              callback: function(val) { return '$' + val.toFixed(2); }
+            }
+          },
+          x: {
+            grid: { color: 'rgba(0,0,0,0.04)' },
+            ticks: { font: { size: 11 } }
+          }
+        }
+      }
+    });
+  })();
+
+  // CHART 2: Doughnut — Platform spend
+  (function() {
+    var ctx = document.getElementById('chartPlatform').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Meta Ads', 'Google Ads'],
+        datasets: [{
+          data: [390.33, 254.86],
+          backgroundColor: ['rgba(24, 119, 242, 0.82)', 'rgba(245, 158, 11, 0.82)'],
+          borderColor: ['#1877F2', '#F59E0B'],
+          borderWidth: 2,
+          hoverOffset: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        cutout: '62%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { font: { size: 12 }, boxWidth: 14, padding: 14 }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                var val = ctx.parsed;
+                var total = 390.33 + 254.86;
+                var pct = ((val / total) * 100).toFixed(1);
+                return ' $' + val.toFixed(2) + ' (' + pct + '%)';
+              }
+            }
+          }
+        }
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
