@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
   <title>Reporte Multiplataforma | FCG</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
@@ -485,7 +486,7 @@
     <div class="chart-card">
       <div class="chart-title">Inversion por plataforma</div>
       <div class="chart-wrap" style="height:280px; display:flex; align-items:center; justify-content:center;">
-        <canvas id="chartPlatform" style="max-width:260px; max-height:260px;"></canvas>
+        <canvas id="chartPlatform"></canvas>
       </div>
     </div>
   </div>
@@ -779,7 +780,6 @@
         ]
       },
       options: {
-        indexAxis: 'y',
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
